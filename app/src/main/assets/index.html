@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#236a63">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Crosti">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Crosti</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <link rel="icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app" id="app">
+      <aside class="sidebar" id="sidebar">
+        <header class="brand">
+          <h1>Crosti</h1>
+          <p>Рабочая карта для вышивания по фрагментам 50 x 50.</p>
+        </header>
+
+        <button class="panelCloseButton" id="panelCloseButton" type="button">Скрыть панель</button>
+        <button class="fileButton" id="fileButton" type="button">Импорт JSON</button>
+        <input id="fileInput" class="fileInput" type="file" accept="application/json,.json">
+
+        <section class="panelBlock">
+          <h2>Карта фрагментов</h2>
+          <canvas id="mapCanvas" width="260" height="160"></canvas>
+          <div id="fragmentGrid" class="fragmentGrid"></div>
+        </section>
+
+        <section class="panelBlock">
+          <h2>Крестик</h2>
+          <div class="cellInfo">
+            <span id="cellSwatch" class="swatch"></span>
+            <div>
+              <b id="cellTitle">Не выбран</b>
+              <span id="cellDetails">Кликните по клетке схемы</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panelBlock">
+          <h2>Цвет</h2>
+          <label class="field">
+            <span>Выделить DMC</span>
+            <select id="colorSelect"></select>
+          </label>
+          <label class="check">
+            <input id="onlyColorInput" type="checkbox">
+            <span>Показывать только этот цвет</span>
+          </label>
+        </section>
+
+        <section class="panelBlock stats">
+          <h2>Статус</h2>
+          <div><span>Размер</span><b id="sizeStat">-</b></div>
+          <div><span>Фрагмент</span><b id="fragmentStat">-</b></div>
+          <div><span>Отшито</span><b id="stitchedStat">-</b></div>
+        </section>
+
+        <button class="dangerButton" id="resetFragmentMarksButton" type="button" disabled>Сбросить отшивки фрагмента</button>
+      </aside>
+
+      <section class="workspace">
+        <header class="toolbar">
+          <button id="sidebarToggle" type="button">Скрыть панель</button>
+          <button id="toolbarImportButton" type="button">Загрузить JSON</button>
+          <div class="segmented" role="tablist" aria-label="Режим схемы">
+            <button id="overviewMode" class="active" type="button">Вся схема</button>
+            <button id="fragmentMode" type="button">Фрагмент</button>
+          </div>
+          <label class="check">
+            <input id="symbolsInput" type="checkbox" checked>
+            <span>Символы</span>
+          </label>
+          <label class="check">
+            <input id="gridInput" type="checkbox" checked>
+            <span>Сетка</span>
+          </label>
+          <label class="check">
+            <input id="stitchedInput" type="checkbox">
+            <span>Отметки</span>
+          </label>
+          <button id="resetFragmentButton" type="button" disabled>Скрыть отшивку</button>
+          <div class="zoom">
+            <button id="zoomOut" type="button">-</button>
+            <input id="zoomInput" type="range" min="6" max="42" value="18">
+            <button id="zoomIn" type="button">+</button>
+          </div>
+          <button id="exportButton" type="button" disabled>Экспорт работы</button>
+          <span id="status">Загрузите JSON проекта</span>
+        </header>
+
+        <div class="canvasShell" id="canvasShell">
+          <div class="canvasStage" id="canvasStage">
+            <canvas id="patternCanvas"></canvas>
+          </div>
+          <div class="empty" id="emptyState">
+            <strong>Нет схемы</strong>
+            <span>Импортируйте проект генератора или сохраненный рабочий файл.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
